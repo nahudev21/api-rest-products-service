@@ -10,7 +10,7 @@ public interface IProductService {
 
     public ProductDTO createProduct(ProductDTO productDTO, MultipartFile image) throws Exception;
 
-    public ProductDTO editProduct(Long id, ProductDTO productDTO, MultipartFile image);
+    public ProductDTO editProduct(Long id, ProductDTO productDTO, MultipartFile image) throws Exception;
 
     public void deleteProduct(Long id);
 

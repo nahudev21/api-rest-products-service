@@ -37,10 +37,26 @@ public class ProductServiceImpl implements IProductService{
     }
 
     @Override
-    public ProductDTO editProduct(Long id, ProductDTO productDTO, MultipartFile image) {
+    public ProductDTO editProduct(Long id, ProductDTO productDTO, MultipartFile image) throws Exception {
 
+        ProductEntity productFound = productRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Publicacion", "id", id));
 
-        return null;
+        if (image != null) {
+            String nameImage = uploadFileService.handleFileUpload(image);
+            productFound.setImage(nameImage);
+        } else {
+            productFound.setName(productDTO.getName());
+            productFound.setDescription(productDTO.getDescription());
+            productFound.setPrice(productDTO.getPrice());
+            productFound.setStock(productDTO.getStock());
+            productFound.setCategory(productDTO.getCategory());
+
+        }
+
+        ProductEntity productEdited = productRepository.save(productFound);
+
+        return mapOutProductDTO(productEdited);
     }
 
     @Override
