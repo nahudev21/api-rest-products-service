@@ -27,6 +27,12 @@ public class ProductController {
         return new ResponseEntity<>(productService.createProduct(productDTO, file), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable(name = "id") Long id) {
+        productService.deleteProduct(id);
+        return new ResponseEntity<>("El producto fue eliminado correctamente", HttpStatus.OK);
+    }
+
     @GetMapping("/getById/{id}")
     @ResponseBody
     public ResponseEntity<ProductDTO> getProductById(@PathVariable(name = "id") Long id) {

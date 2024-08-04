@@ -45,7 +45,9 @@ public class ProductServiceImpl implements IProductService{
 
     @Override
     public void deleteProduct(Long id) {
-
+        ProductEntity productFound = productRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Publicacion", "id", id));
+        productRepository.delete(productFound);
     }
 
     @Override
