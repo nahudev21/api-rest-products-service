@@ -7,6 +7,9 @@ import com.Nahudev.products_service_apiRest.repository.IProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 public class ProductServiceImpl implements IProductService{
@@ -17,9 +20,19 @@ public class ProductServiceImpl implements IProductService{
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private UploadFileServiceImpl uploadFileService;
+
     @Override
-    public ProductDTO createProduct(ProductDTO productDTO) {
-        return null;
+    public ProductDTO createProduct(ProductDTO productDTO, MultipartFile image) throws Exception {
+
+        ProductEntity productEntity = mapOutProductEntity(productDTO);
+        String nameImage = uploadFileService.handleFileUpload(image);
+        productEntity.setImage(nameImage);
+
+        ProductEntity newProduct = productRepository.save(productEntity);
+
+        return mapOutProductDTO(newProduct);
     }
 
     @Override
