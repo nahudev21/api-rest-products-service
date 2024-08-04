@@ -2,6 +2,7 @@ package com.Nahudev.products_service_apiRest.service;
 
 import com.Nahudev.products_service_apiRest.dto.ProductDTO;
 import com.Nahudev.products_service_apiRest.dto.ProductsDTO;
+import com.Nahudev.products_service_apiRest.exceptions.ResourceNotFoundException;
 import com.Nahudev.products_service_apiRest.model.ProductEntity;
 import com.Nahudev.products_service_apiRest.repository.IProductRepository;
 import org.modelmapper.ModelMapper;
@@ -36,7 +37,9 @@ public class ProductServiceImpl implements IProductService{
     }
 
     @Override
-    public ProductDTO editProduct(Long id, ProductDTO productDTO) {
+    public ProductDTO editProduct(Long id, ProductDTO productDTO, MultipartFile image) {
+
+
         return null;
     }
 
@@ -47,7 +50,10 @@ public class ProductServiceImpl implements IProductService{
 
     @Override
     public ProductDTO getProductById(Long id) {
-        return null;
+
+        ProductEntity productEntity = productRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Publicacion", "id", id));
+        return mapOutProductDTO(productEntity);
     }
 
     @Override

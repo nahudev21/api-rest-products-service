@@ -18,22 +18,18 @@ public class ProductController {
     @Autowired
     private IProductService productService;
 
-    @Autowired
-    private UploadFileServiceImpl uploadFileService;
-
-    @PostMapping( "/create")
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO,
-                                                    @RequestParam("image") MultipartFile image) throws Exception {
-
-        return new ResponseEntity<>(productService.createProduct(productDTO, image), HttpStatus.CREATED);
-    }
-
-    @PostMapping("/create/image")
+    @PostMapping("/create")
     public ResponseEntity<ProductDTO> createProduct(@RequestParam(value = "file", required = false) MultipartFile file,
                                                 @RequestParam("data") String productString) throws Exception {
 
         ProductDTO productDTO = new ObjectMapper().readValue(productString, ProductDTO.class);
 
         return new ResponseEntity<>(productService.createProduct(productDTO, file), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/getById/{id}")
+    @ResponseBody
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable(name = "id") Long id) {
+        return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
 }
