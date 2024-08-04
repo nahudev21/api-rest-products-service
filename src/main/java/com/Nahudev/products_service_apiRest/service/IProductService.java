@@ -16,6 +16,6 @@ public interface IProductService {
 
     public ProductDTO getProductById(Long id);
 
-    public ProductsDTO getAllProducts();
+    public ProductsDTO getAllProducts(int numPage, int pageSize, String orderBy, String sortDir);
 
 }

@@ -28,5 +28,4 @@ public class ProductDTO {
 
     private String category;
 
-
 }

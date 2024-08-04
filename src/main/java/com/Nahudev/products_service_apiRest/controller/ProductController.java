@@ -1,8 +1,10 @@
 package com.Nahudev.products_service_apiRest.controller;
 
 import com.Nahudev.products_service_apiRest.dto.ProductDTO;
+import com.Nahudev.products_service_apiRest.dto.ProductsDTO;
 import com.Nahudev.products_service_apiRest.service.IProductService;
 import com.Nahudev.products_service_apiRest.service.UploadFileServiceImpl;
+import com.Nahudev.products_service_apiRest.utils.AppConstants;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,4 +51,21 @@ public class ProductController {
     public ResponseEntity<ProductDTO> getProductById(@PathVariable(name = "id") Long id) {
         return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
+
+    @GetMapping()
+    @ResponseBody
+    public ResponseEntity<?> getAllProducts(@RequestParam(name = "numPage", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int numPage,
+                                            @RequestParam(name = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+                                            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_BY_DEFAULT, required = false) String orderBy,
+                                            @RequestParam(name = "sortDir", defaultValue = AppConstants.SORT_DEFAULT_ADDRESS, required = false) String sortDir) {
+
+        ProductsDTO listProducts = productService.getAllProducts(numPage, pageSize, orderBy, sortDir);
+
+        if (listProducts != null) {
+            return ResponseEntity.ok(listProducts);
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
 }

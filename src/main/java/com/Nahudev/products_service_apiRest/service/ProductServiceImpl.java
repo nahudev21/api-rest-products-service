@@ -7,10 +7,15 @@ import com.Nahudev.products_service_apiRest.model.ProductEntity;
 import com.Nahudev.products_service_apiRest.repository.IProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements IProductService{
@@ -75,8 +80,24 @@ public class ProductServiceImpl implements IProductService{
     }
 
     @Override
-    public ProductsDTO getAllProducts() {
-        return null;
+    public ProductsDTO getAllProducts(int numPage, int pageSize, String orderBy, String sortDir) {
+
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())?Sort.by(orderBy).ascending():Sort.by(orderBy).descending();
+        Pageable pageable = PageRequest.of(numPage, pageSize, sort);
+        Page<ProductEntity> products = productRepository.findAll(pageable);
+
+        List<ProductEntity> productEntities = products.getContent();
+        List<ProductDTO> listProducts = productEntities.stream().map(this::mapOutProductDTO).collect(Collectors.toList());
+
+        ProductsDTO productsDTO = new ProductsDTO();
+        productsDTO.setProducts(listProducts);
+        productsDTO.setPageNumber(products.getNumber());
+        productsDTO.setPageSize(products.getSize());
+        productsDTO.setTotalItems(products.getTotalElements());
+        productsDTO.setTotalItems(products.getTotalElements());
+        productsDTO.setLast(products.isLast());
+
+        return productsDTO;
     }
 
     private ProductDTO mapOutProductDTO(ProductEntity productEntity) {
