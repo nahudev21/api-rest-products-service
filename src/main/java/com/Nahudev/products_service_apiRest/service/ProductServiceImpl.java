@@ -100,6 +100,17 @@ public class ProductServiceImpl implements IProductService{
         return productsDTO;
     }
 
+    @Override
+    public ProductsDTO getAllProductsByCategory(String category) {
+        List<ProductEntity> listProductsByCategory = productRepository.getAllProductsByCategory(category);
+        List<ProductDTO> listProducts = listProductsByCategory.stream().map(this::mapOutProductDTO).collect(Collectors.toList());
+
+        ProductsDTO productsDTO = new ProductsDTO();
+        productsDTO.setProducts(listProducts);
+
+        return productsDTO;
+    }
+
     private ProductDTO mapOutProductDTO(ProductEntity productEntity) {
         return modelMapper.map(productEntity, ProductDTO.class);
     }

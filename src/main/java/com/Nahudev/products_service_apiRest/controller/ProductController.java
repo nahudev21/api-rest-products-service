@@ -68,4 +68,16 @@ public class ProductController {
         return ResponseEntity.badRequest().build();
     }
 
+    @GetMapping("/getByCategory")
+    @ResponseBody
+    public ResponseEntity<?> getAllProductsByCategory(@RequestParam(name = "category") String category) {
+        ProductsDTO lisProducts = productService.getAllProductsByCategory(category);
+
+        if (lisProducts != null) {
+            return ResponseEntity.ok(lisProducts);
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
 }
