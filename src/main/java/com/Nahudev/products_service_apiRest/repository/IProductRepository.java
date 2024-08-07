@@ -2,6 +2,8 @@ package com.Nahudev.products_service_apiRest.repository;
 
 import com.Nahudev.products_service_apiRest.dto.ProductsDTO;
 import com.Nahudev.products_service_apiRest.model.ProductEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +15,6 @@ import java.util.List;
 public interface IProductRepository extends JpaRepository<ProductEntity, Long> {
 
     @Query("SELECT p FROM ProductEntity p WHERE p.category LIKE %:category%")
-    public List<ProductEntity> getAllProductsByCategory(@Param("category") String category);
+    public Page<ProductEntity> getAllProductsByCategory(@Param("category") String category, Pageable pageable);
 
 }

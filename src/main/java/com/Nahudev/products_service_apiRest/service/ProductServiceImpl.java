@@ -94,19 +94,29 @@ public class ProductServiceImpl implements IProductService{
         productsDTO.setPageNumber(products.getNumber());
         productsDTO.setPageSize(products.getSize());
         productsDTO.setTotalItems(products.getTotalElements());
-        productsDTO.setTotalItems(products.getTotalElements());
+        productsDTO.setTotalPages(products.getTotalPages());
         productsDTO.setLast(products.isLast());
 
         return productsDTO;
     }
 
     @Override
-    public ProductsDTO getAllProductsByCategory(String category) {
-        List<ProductEntity> listProductsByCategory = productRepository.getAllProductsByCategory(category);
+    public ProductsDTO getAllProductsByCategory(String category, int numPage, int pageSize, String orderBy, String sortDir) {
+
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())?Sort.by(orderBy).ascending():Sort.by(orderBy).descending();
+        Pageable pageable = PageRequest.of(numPage, pageSize, sort);
+        Page<ProductEntity> products = productRepository.getAllProductsByCategory(category, pageable);
+
+        List<ProductEntity> listProductsByCategory = products.getContent();
         List<ProductDTO> listProducts = listProductsByCategory.stream().map(this::mapOutProductDTO).collect(Collectors.toList());
 
         ProductsDTO productsDTO = new ProductsDTO();
         productsDTO.setProducts(listProducts);
+        productsDTO.setPageNumber(products.getNumber());
+        productsDTO.setPageSize(products.getSize());
+        productsDTO.setTotalItems(products.getTotalElements());
+        productsDTO.setTotalPages(products.getTotalPages());
+        productsDTO.setLast(products.isLast());
 
         return productsDTO;
     }

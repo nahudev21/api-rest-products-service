@@ -70,8 +70,13 @@ public class ProductController {
 
     @GetMapping("/getByCategory")
     @ResponseBody
-    public ResponseEntity<?> getAllProductsByCategory(@RequestParam(name = "category") String category) {
-        ProductsDTO lisProducts = productService.getAllProductsByCategory(category);
+    public ResponseEntity<?> getAllProductsByCategory(@RequestParam(name = "category") String category,
+                                                      @RequestParam(name = "numPage", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int numPage,
+                                                      @RequestParam(name = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+                                                      @RequestParam(name = "orderBy", defaultValue = AppConstants.SORT_BY_DEFAULT, required = false) String orderBy,
+                                                      @RequestParam(name = "sortDir", defaultValue = AppConstants.SORT_DEFAULT_ADDRESS, required = false) String sortDir) {
+
+        ProductsDTO lisProducts = productService.getAllProductsByCategory(category, numPage, pageSize, orderBy, sortDir);
 
         if (lisProducts != null) {
             return ResponseEntity.ok(lisProducts);

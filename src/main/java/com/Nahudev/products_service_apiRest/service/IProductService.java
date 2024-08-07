@@ -18,6 +18,6 @@ public interface IProductService {
 
     public ProductsDTO getAllProducts(int numPage, int pageSize, String orderBy, String sortDir);
 
-    public ProductsDTO getAllProductsByCategory(String category);
+    public ProductsDTO getAllProductsByCategory(String category, int numPage, int pageSize, String orderBy, String sortDir);
 
 }
