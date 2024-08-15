@@ -12,6 +12,8 @@ public interface IProductService {
 
     public ProductDTO editProduct(Long id, ProductDTO productDTO, MultipartFile image) throws Exception;
 
+    public void reduceStock(Long id, int amount) throws Exception;
+
     public void deleteProduct(Long id);
 
     public ProductDTO getProductById(Long id);

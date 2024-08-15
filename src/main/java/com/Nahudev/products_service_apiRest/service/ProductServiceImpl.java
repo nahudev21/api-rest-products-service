@@ -45,7 +45,7 @@ public class ProductServiceImpl implements IProductService{
     public ProductDTO editProduct(Long id, ProductDTO productDTO, MultipartFile image) throws Exception {
 
         ProductEntity productFound = productRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Publicacion", "id", id));
+                new ResourceNotFoundException("Producto", "id", id));
 
         if (image != null) {
             String nameImage = uploadFileService.handleFileUpload(image);
@@ -65,9 +65,21 @@ public class ProductServiceImpl implements IProductService{
     }
 
     @Override
+    public void reduceStock(Long id, int amount) throws Exception {
+
+        ProductEntity productFound = productRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Producto", "id", id));
+
+        productFound.setStock(amount);
+        ProductEntity productEdited = productRepository.save(productFound);
+
+
+    }
+
+    @Override
     public void deleteProduct(Long id) {
         ProductEntity productFound = productRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Publicacion", "id", id));
+                new ResourceNotFoundException("Producto", "id", id));
         productRepository.delete(productFound);
     }
 
@@ -75,7 +87,7 @@ public class ProductServiceImpl implements IProductService{
     public ProductDTO getProductById(Long id) {
 
         ProductEntity productEntity = productRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Publicacion", "id", id));
+                new ResourceNotFoundException("Producto", "id", id));
         return mapOutProductDTO(productEntity);
     }
 

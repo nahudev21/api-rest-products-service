@@ -40,6 +40,13 @@ public class ProductController {
         return new ResponseEntity<>(productService.editProduct(id, productDTO, file), HttpStatus.OK);
     }
 
+    @PutMapping("/reduceStock/{id}/{amount}")
+    public void reduceStock(@PathVariable(name = "id") Long id,
+                                                  @PathVariable(name = "amount") int amount) throws Exception {
+        productService.reduceStock(id, amount);
+    }
+
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable(name = "id") Long id) {
         productService.deleteProduct(id);
